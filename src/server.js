@@ -1,5 +1,6 @@
 const express = require('express');
 const exphbs = require('express-handlebars')
+const morgan = require('morgan')
 const path = require('path')
 const app = express();
 
@@ -16,10 +17,15 @@ app.engine('.hbs', exphbs({
 app.set('view engine', '.hbs');
 
 // MIDDLEWARES
+app.use(morgan('dev'))
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
 
 // ROUTES
 app.use(require('./routes/index.routes'))
 
 // STATICS FILES
+app.use(express.static(path.join(__dirname, 'public')))
+
 
 module.exports = app;
